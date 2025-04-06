@@ -1,13 +1,17 @@
 import asyncio
 import logging
+import os
 from datetime import datetime
 
 import pandas as pd
 from aiogram.filters import Command
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from dotenv import load_dotenv
 
-TOKEN = "7609421759:AAFvZegHPaSRLNBLzwpsds5XZpuKVBUFfUI"
+load_dotenv()
+
+TOKEN = os.getenv("TOKEN")
 WEB_APP_URL = "https://it-otdel.space"
 
 bot = Bot(token=TOKEN)
