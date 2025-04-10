@@ -47,29 +47,29 @@ async def moder_button(message: Message):
 
 @dp.message(Command("start"))
 async def start_cmd(message: Message):
-    event_start_date = "11 апреля"
-    event_start_datetime = datetime.strptime("2025-04-11", "%Y-%m-%d")
-
-    current_datetime = datetime.now()
-
-    if current_datetime < event_start_datetime:
-        await message.answer(
-            "Здравствуй, странник!\n"
-            "Это бот для участия в PlayIT 🧌\n"
-            "После начала мероприятия именно здесь ты начнёшь своё сказочное путешествие!\n\n"
-            f"Мероприятие начнётся {event_start_date}.\n\n"
-            "Бот заработает в день начала мероприятия."
-        )
-    else:
-        if check_user(message):
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="Открыть веб-приложение", web_app=WebAppInfo(url=WEB_APP_URL))]
-            ],
-                resize_keyboard=True
-            )
-            await message.answer(text="Привет! Нажми на кнопку, чтобы открыть приложение", reply_markup=keyboard)
-        else:
-            await message.answer(text="К сожалению, вы не регистрировались на это мероприятие.")
+    event_start_date = "11 апреля в 12:00"
+    # event_start_datetime = datetime.strptime("2025-04-11", "%Y-%m-%d")
+    #
+    # current_datetime = datetime.now()
+    #
+    # if current_datetime < event_start_datetime:
+    await message.answer(
+        "Здравствуй, странник!\n"
+        "Это бот для участия в PlayIT 🧌\n"
+        "После начала мероприятия именно здесь ты начнёшь своё сказочное путешествие!\n\n"
+        f"Мероприятие начнётся {event_start_date}.\n\n"
+        "Бот заработает в день начала мероприятия."
+    )
+    # else:
+    #     if check_user(message):
+    #         keyboard = InlineKeyboardMarkup(inline_keyboard=[
+    #             [InlineKeyboardButton(text="Открыть веб-приложение", web_app=WebAppInfo(url=WEB_APP_URL))]
+    #         ],
+    #             resize_keyboard=True
+    #         )
+    #         await message.answer(text="Привет! Нажми на кнопку, чтобы открыть приложение", reply_markup=keyboard)
+    #     else:
+    #         await message.answer(text="xК сожалению, вы не регистрировались на это мероприятие.")
 
 
 async def send_daily_message():
