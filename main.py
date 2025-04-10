@@ -4,6 +4,8 @@ import os
 from datetime import datetime
 
 import pandas as pd
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from aiogram.filters import Command
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
@@ -58,7 +60,30 @@ async def start_cmd(message: Message):
             await message.answer(text="К сожалению, вы не регистрировались на это мероприятие.")
 
 
+async def send_daily_message():
+    try:
+        df = pd.read_csv(CSV_FILE_PATH)
+        for username in df['telegram_username']:
+            try:
+                user = await bot.get_chat(f"{username}")
+                await bot.send_message(
+                    chat_id=user.id,
+                    text="Приветствую тебя, добрый молодец или девица красная! "
+                         "Дозволь уведомить о прибавлении новых заданий мудрёных."
+                )
+            except Exception as e:
+                logging.warning(f"Не удалось отправить сообщение @{username}: {e}")
+    except Exception as e:
+        logging.error(f"Ошибка при рассылке сообщений: {e}")
+
+
 async def main():
+    scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+    scheduler.add_job(
+        send_daily_message,
+        CronTrigger(hour=12, minute=0),
+    )
+    scheduler.start()
     await dp.start_polling(bot)
 
 
