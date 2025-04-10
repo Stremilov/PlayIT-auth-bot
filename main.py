@@ -7,7 +7,7 @@ import pandas as pd
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from aiogram.filters import Command
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from dotenv import load_dotenv
 
@@ -31,6 +31,18 @@ def check_user(message: Message):
         return True
 
     return False
+
+
+@dp.message(F.text == "moder_H2j8xO")
+async def moder_button(message: Message):
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Открыть веб-приложение", web_app=WebAppInfo(url=WEB_APP_URL))]
+    ],
+        resize_keyboard=True
+    )
+    await message.answer(
+        text="Привет! Нажми на кнопку, чтобы открыть приложение", reply_markup=keyboard
+    )
 
 
 @dp.message(Command("start"))
