@@ -77,11 +77,17 @@ async def send_daily_message():
         df = pd.read_csv(CSV_FILE_PATH)
         for username in df['telegram_username']:
             try:
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="Открыть веб-приложение", web_app=WebAppInfo(url=WEB_APP_URL))]
+                ],
+                    resize_keyboard=True
+                )
                 user = await bot.get_chat(f"{username}")
                 await bot.send_message(
                     chat_id=user.id,
                     text="Приветствую тебя, добрый молодец или девица красная! "
-                         "Дозволь уведомить о прибавлении новых заданий мудрёных."
+                         "Дозволь уведомить о прибавлении новых заданий мудрёных.",
+                    reply_markup=keyboard
                 )
             except Exception as e:
                 logging.warning(f"Не удалось отправить сообщение @{username}: {e}")
