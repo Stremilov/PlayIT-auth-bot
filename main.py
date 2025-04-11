@@ -105,7 +105,7 @@ async def start_cmd(message: Message):
         )
         await message.answer(text="Привет! Нажми на кнопку, чтобы открыть приложение", reply_markup=keyboard)
     else:
-        await message.answer(text="xК сожалению, вы не регистрировались на это мероприятие.")
+        await message.answer(text="К сожалению вы не зарегистрировались на это мероприятие.\n\nEсли вы заполняли форму, обратитесь в поддержку — @playit_2025")
 
 
 async def send_daily_message():
