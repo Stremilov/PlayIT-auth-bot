@@ -3,6 +3,8 @@ version: '3.9'
 services:
   auth-playit-bot:
     build: .
+    env_file:
+      - .env
     networks:
       - skynet
 
