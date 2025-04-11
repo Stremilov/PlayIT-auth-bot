@@ -3,3 +3,4 @@ aiogram~=3.17.0
 apscheduler
 sqlalchemy
 psycopg2-binary
+python-dotenv
