@@ -45,8 +45,8 @@ async def moder_button(message: Message):
     )
 
 
-@dp.message(F.text == "moder_H2j8xO")
-async def rass(message):
+@dp.message(F.text == "rassilka_52")
+async def rass(message: Message):
     df = pd.read_csv(CSV_FILE_PATH)
     for username in df['telegram_username']:
         try:
