@@ -64,6 +64,34 @@ usernames = {1252614429: 'chml3', 5191163134: 'romashkaskrip', 821143465: 'nnnna
              1743566211: 'IIIyT_04ka', 5353133119: 'deV1cktor'}
 
 
+@dp.message(Command("mailing"))
+async def mailing_command(message: Message):
+    whitelist = [294057781, 337683248, 659163860]
+    tg_id = message.from_user.id
+    text_to_mail = message.text[len('/mailing '):]
+    if tg_id in whitelist:
+        session = next(get_db_session())
+        try:
+            result = session.execute(text("SELECT tg_telegram_id FROM users WHERE telegram_id IS NOT NULL"))
+            telegram_ids = [row[0] for row in result.fetchall()]
+            logging.info(f"Всего пользователей для рассылки: {len(telegram_ids)}")
+            for tg_id in telegram_ids:
+                try:
+                    await bot.send_message(
+                        chat_id=tg_id,
+                        text=text_to_mail
+                    )
+                    await asyncio.sleep(0.05)
+                except Exception as e:
+                    logging.warning(f"Не удалось отправить сообщение {tg_id}: {e}")
+        except Exception as e:
+            logging.error(f"Ошибка при обращении к базе данных: {e}")
+        finally:
+            session.close()
+    else:
+        await message.answer('ты охуел?\n\nнет доступа!')
+
+
 @dp.message(Command("mail_to_afk"))
 async def cmd_register(message: Message):
     tg_id = message.from_user.id
