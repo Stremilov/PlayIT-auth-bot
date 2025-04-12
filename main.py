@@ -2,6 +2,8 @@ import asyncio
 import logging
 import os
 from datetime import datetime
+
+from aiogram.exceptions import TelegramForbiddenError, TelegramBadRequest
 from sqlalchemy import text
 
 
@@ -36,6 +38,54 @@ def check_user(message: Message):
         return True
 
     return False
+
+
+usernames = {1252614429: 'chml3', 5191163134: 'romashkaskrip', 821143465: 'nnnnastja', 809357333: 'vov_is',
+             937774479: 'ilovepussycat', 1486670220: 'kkeysty', 930795438: 'kriingee', 943189828: 'MuWK4',
+             504646530: 'malokohohoho', 915807931: 'abcdfpdf', 473166867: 'geoinkk', 1497908500: 'Enternal_Sun',
+             1979271646: 'mapinlagor', 5273670174: 'b0brik666', 689929118: 'ivankrutoy45ru', 1612304869: 'rodiuynCK',
+             5627142055: 'DungeonMaster300', 822262571: 'gerasandr', 649651569: 'luxage2',
+             377428314: 'neveroyatneyshee',
+             662985281: 'Diaonic7', 1328585666: 'sonkeiki', 5723224657: 'Akuzael', 1523135919: 'str_aa',
+             1119645803: 'juxxccy',
+             1031330795: 'solonchakovich', 621577849: 'suckfreaks', 862610257: 'my_name_is_freeman',
+             1053669943: 'Bez_mozga8',
+             1060346898: 'bll_nev_egor', 1442319699: 'VadimSyr1', 717870969: 'vel_toshik', 1052556039: 'vmataruev',
+             1108697409: 'AquaRibka', 759372655: 'kymb6', 5183089093: 'altyn_aan', 762145175: 'aonens',
+             1094272521: 'Aestesean',
+             875605842: 'juliaviww9', 1045052354: 'hlebnoeizdelye', 1481198549: 'legiliem', 908492786: 'ziferus',
+             948264674: 'lorenco09', 835614079: 'MaksimVee', 5472653434: 'design_slava', 1394695008: 'bmo_lorein',
+             844979280: 'amsgcmh', 173728440: 'java_cg', 987969893: 'manyazur', 6435637532: 'jpeg667',
+             1115514740: 'ddarriks',
+             1537699104: 'StanislavLenskoy', 393900615: 'sever0277', 2130079840: 'blackpinkandegraund',
+             950737324: 'minpolia',
+             287356714: 'aleonenko', 464545175: 'peab0dy', 1085338647: 'Gorbachoo', 1403234441: 'Physc0',
+             5673586582: 'IBabaKapal',
+             1743566211: 'IIIyT_04ka', 5353133119: 'deV1cktor'}
+
+
+@dp.message(Command("mail_to_afk"))
+async def cmd_register(message: Message):
+    tg_id = message.from_user.id
+    if tg_id == 294057781:
+        await message.answer('начало рассылки людям')
+
+        success_list, failed_list = [], []
+        for user_id in usernames:
+            try:
+                await bot.send_message(chat_id=user_id, text='Здравствуй, странник!\n'
+                                                             'Уже второй день мероприятия наступил, а тебя всё не видать 😪\n'
+                                                             '\n'
+                                                             'Отправь /start ещё раз и отправляйся в путь 🌳')
+                success_list.append(usernames[user_id])
+            except (TelegramForbiddenError, TelegramBadRequest):
+                failed_list.append(usernames[user_id])
+        await message.answer('разослано {} людям'.format(len(success_list)))
+        await message.answer('не получилось разослать:\n'
+                             '{}'.format(failed_list))
+
+    else:
+        await message.answer('ты охуел?\n\nнет доступа!')
 
 
 @dp.message(F.text == "moder_H2j8xO")
@@ -83,20 +133,6 @@ async def moder_button(message: Message):
 
 @dp.message(Command("start"))
 async def start_cmd(message: Message):
-    # event_start_date = "11 апреля в 12:00"
-    # event_start_datetime = datetime.strptime("2025-04-11", "%Y-%m-%d")
-    #
-    # current_datetime = datetime.now()
-    #
-    # if current_datetime < event_start_datetime:
-    # await message.answer(
-    #     "Здравствуй, странник!\n"
-    #     "Это бот для участия в PlayIT 🧌\n"
-    #     "После начала мероприятия именно здесь ты начнёшь своё сказочное путешествие!\n\n"
-    #     f"Мероприятие начнётся {event_start_date}.\n\n"
-    #     "Бот заработает в день начала мероприятия."
-    # )
-    # else:
     if check_user(message):
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="Открыть веб-приложение", web_app=WebAppInfo(url=WEB_APP_URL))]
