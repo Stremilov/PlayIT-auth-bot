@@ -210,6 +210,7 @@ async def main():
         CronTrigger(hour=10, minute=0),
     )
     scheduler.start()
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 
