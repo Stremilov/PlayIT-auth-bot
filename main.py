@@ -72,7 +72,7 @@ async def mailing_command(message: Message):
     if tg_id in whitelist:
         session = next(get_db_session())
         try:
-            result = session.execute(text("SELECT tg_telegram_id FROM users WHERE telegram_id IS NOT NULL"))
+            result = session.execute(text("SELECT telegram_id FROM users WHERE telegram_id IS NOT NULL"))
             telegram_ids = [row[0] for row in result.fetchall()]
             logging.info(f"Всего пользователей для рассылки: {len(telegram_ids)}")
             for tg_id in telegram_ids:
