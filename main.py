@@ -143,7 +143,7 @@ async def main():
     scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
     scheduler.add_job(
         send_daily_message,
-        CronTrigger(hour=12, minute=0),
+        CronTrigger(hour=10, minute=0),
     )
     scheduler.start()
     await dp.start_polling(bot)
