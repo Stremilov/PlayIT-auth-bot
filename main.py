@@ -172,44 +172,44 @@ async def start_cmd(message: Message):
         await message.answer(text="К сожалению вы не зарегистрировались на это мероприятие.\n\nEсли вы заполняли форму, обратитесь в поддержку — @playit_2025")
 
 
-async def send_daily_message():
-    session = next(get_db_session())
-    try:
-        result = session.execute(text("SELECT telegram_id FROM users WHERE telegram_id IS NOT NULL"))
-        telegram_ids = [row[0] for row in result.fetchall()]
-
-        logging.info(f"Всего пользователей для рассылки: {len(telegram_ids)}")
-
-        keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="Открыть веб-приложение", web_app=WebAppInfo(url=WEB_APP_URL))]
-        ],
-            resize_keyboard=True
-        )
-
-        for tg_id in telegram_ids:
-            try:
-                await bot.send_message(
-                    chat_id=tg_id,
-                    text="Приветствую тебя, добрый молодец или девица красная! "
-                         "Дозволь уведомить о прибавлении новых заданий мудрёных.",
-                    reply_markup=keyboard
-                )
-                await asyncio.sleep(0.05)
-            except Exception as e:
-                logging.warning(f"Не удалось отправить сообщение {tg_id}: {e}")
-    except Exception as e:
-        logging.error(f"Ошибка при обращении к базе данных: {e}")
-    finally:
-        session.close()
+# async def send_daily_message():
+#     session = next(get_db_session())
+#     try:
+#         result = session.execute(text("SELECT telegram_id FROM users WHERE telegram_id IS NOT NULL"))
+#         telegram_ids = [row[0] for row in result.fetchall()]
+#
+#         logging.info(f"Всего пользователей для рассылки: {len(telegram_ids)}")
+#
+#         keyboard = InlineKeyboardMarkup(inline_keyboard=[
+#             [InlineKeyboardButton(text="Открыть веб-приложение", web_app=WebAppInfo(url=WEB_APP_URL))]
+#         ],
+#             resize_keyboard=True
+#         )
+#
+#         for tg_id in telegram_ids:
+#             try:
+#                 await bot.send_message(
+#                     chat_id=tg_id,
+#                     text="Приветствую тебя, добрый молодец или девица красная! "
+#                          "Дозволь уведомить о прибавлении новых заданий мудрёных.",
+#                     reply_markup=keyboard
+#                 )
+#                 await asyncio.sleep(0.05)
+#             except Exception as e:
+#                 logging.warning(f"Не удалось отправить сообщение {tg_id}: {e}")
+#     except Exception as e:
+#         logging.error(f"Ошибка при обращении к базе данных: {e}")
+#     finally:
+#         session.close()
 
 
 async def main():
-    scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-    scheduler.add_job(
-        send_daily_message,
-        CronTrigger(hour=10, minute=0),
-    )
-    scheduler.start()
+    # scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+    # scheduler.add_job(
+    #     send_daily_message,
+    #     CronTrigger(hour=10, minute=0),
+    # )
+    # scheduler.start()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
